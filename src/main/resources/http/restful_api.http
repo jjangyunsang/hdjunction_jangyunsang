@@ -1,0 +1,31 @@
+### 환자정보 조회 ###
+GET http://localhost/patient/1
+Content-Type: application/json
+
+### 환자정보 등록 ###
+POST http://localhost/patient
+Content-Type: application/json
+
+{
+  "hospitalId": 3,
+  "patientName": "장윤상",
+  "gender": "M",
+  "birth": "19900413",
+  "phone": "01090101247"
+}
+
+### 환자정보 수정 ###
+PUT http://localhost/patient
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "hospitalId": 3,
+  "patientName": "장윤상-이름변경",
+  "gender": "M",
+  "birth": "19900630",
+  "phone": "01012345678"
+}
+
+### 환자정보 삭제 ###
+DELETE http://localhost/patient/1
