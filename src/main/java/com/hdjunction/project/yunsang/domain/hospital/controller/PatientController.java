@@ -2,6 +2,7 @@ package com.hdjunction.project.yunsang.domain.hospital.controller;
 
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientResponseDto;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.service.PatientService;
 import com.hdjunction.project.yunsang.global.dto.ResponseDto;
 import jakarta.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,8 +33,8 @@ public class PatientController {
      * 환자 목록 조회
      */
     @GetMapping(value = "")
-    public ResponseDto<Object> getList() {
-        return null;
+    public ResponseDto<Object> getList(@Valid @ModelAttribute PatientSearchRequestDto patientSearchRequestDto) {
+        return ResponseDto.success(patientService.getList(patientSearchRequestDto));
     }
 
     /**

@@ -3,9 +3,12 @@ package com.hdjunction.project.yunsang.domain.hospital.service;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRow;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.VisitResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.entity.Patient;
 import com.hdjunction.project.yunsang.domain.hospital.repository.PatientRepository;
+import com.hdjunction.project.yunsang.global.dto.PageDto;
 import com.hdjunction.project.yunsang.global.enums.ErrorCodes;
 import com.hdjunction.project.yunsang.global.exception.ApiException;
 import org.apache.commons.lang3.ObjectUtils;
@@ -15,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -27,8 +32,20 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void getList() {
-
+    @SuppressWarnings(value = "unchecked")
+    @Transactional(readOnly = true)
+    public <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto) {
+        List<PatientSearchResponseDto> searchList = patientRepository.getPatientSearch(patientSearchRequestDto);
+        Map<String, T> map = new HashMap<>();
+        PageDto pageDto = PageDto.of(
+                patientSearchRequestDto.getPage()
+                , patientSearchRequestDto.getLimit()
+                , searchList
+        );
+        // TODO - Page Object로 구현변경 필요.
+        map.put("list", (T) pageDto.subList(searchList));
+        map.put("page", (T) pageDto);
+        return map;
     }
 
     @Override
