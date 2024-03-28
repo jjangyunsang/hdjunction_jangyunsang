@@ -34,7 +34,8 @@ CREATE TABLE patient (
     birth VARCHAR(10) NULL COMMENT '생년월일',
     phone VARCHAR(20) NULL COMMENT '휴대전화번호',
     CONSTRAINT fk_patient_hospital_id FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id),
-    CHECK ( patient_id >= 0, hospital_id >= 0 )
+    CHECK ( patient_id >= 0 ),
+    CHECK ( hospital_id >= 0 )
 );
 COMMENT ON TABLE patient IS '환자';
 -- 검색 대상 index 추가
@@ -50,6 +51,8 @@ CREATE TABLE visit (
     visit_status_code VARCHAR(10) NOT NULL COMMENT '방문상태코드',
     CONSTRAINT fk_patient_visit_hospital_id FOREIGN KEY (hospital_id) REFERENCES hospital(hospital_id),
     CONSTRAINT fk_patient_visit_patient_id FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
-    CHECK ( visit_id >= 0, hospital_id >= 0, patient_id >= 0 )
+    CHECK ( visit_id >= 0 ),
+    CHECK ( hospital_id >= 0 ),
+    CHECK ( patient_id >= 0 )
 );
 COMMENT ON TABLE visit IS '환자방문';

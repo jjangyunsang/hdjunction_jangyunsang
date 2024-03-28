@@ -20,3 +20,11 @@ VALUES
     ('treatment_type_code', 'D', '약처방'),
     ('treatment_type_code', 'T', '검사')
 ;
+
+INSERT INTO hospital
+    (hospital_id, hospital_name, medical_care_no, hospital_chief)
+VALUES
+    (1, '서울아산병원', '11100800', '박승일'),
+    (2, '분당서울대학교병원', '31100813', '송정한'),
+    (3, '장윤상우리병원', '12345678', '장윤상')
+;
