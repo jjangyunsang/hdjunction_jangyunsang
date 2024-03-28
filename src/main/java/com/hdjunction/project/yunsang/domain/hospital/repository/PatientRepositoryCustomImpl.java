@@ -13,6 +13,10 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,9 +34,12 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
     }
 
     @Override
-    public List<PatientSearchResponseDto> getPatientSearch(PatientSearchRequestDto patientSearchRequestDto) {
+    public Page<PatientSearchResponseDto> getPatientSearch(PatientSearchRequestDto patientSearchRequestDto) {
         QPatient patient = QPatient.patient;
         QVisit visit = QVisit.visit;
+
+        Pageable pageable = patientSearchRequestDto.toPageable();
+
         BooleanBuilder whereBuilder = new BooleanBuilder();
         whereBuilder.and(patient.hospitalId.eq(patientSearchRequestDto.getHospitalId()));
 
@@ -48,23 +55,33 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
         } else if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.BIRTH.getKey()))) {
             whereBuilder.and(patient.birth.eq(conditionMap.get(SearchConditionEnum.BIRTH.getKey())));
         }
-
-        return queryFactory.select(
-                Projections.constructor(
-                        PatientSearchResponseDto.class
-                        , patient.patientName
-                        , patient.patientNo
-                        , patient.gender
-                        , patient.birth
-                        , patient.phone
-                        , visit.registerDate.max().as("recentlyDate"))
+        // 결과 List
+        List<PatientSearchResponseDto> resultList = queryFactory.select(Projections.constructor(
+                PatientSearchResponseDto.class
+                , patient.patientName
+                , patient.patientNo
+                , patient.gender
+                , patient.birth
+                , patient.phone
+                , visit.registerDate.max().as("recentlyDate"))
                 )
-                .from(patient)
+                .from(patient).where(whereBuilder)
                 .leftJoin(visit).on(patient.patientId.eq(visit.patientId))
-                .where(whereBuilder)
+                .offset(pageable.getOffset()).limit(pageable.getPageSize())
                 .groupBy(patient.patientId)
-                .orderBy(patient.patientId.desc())
                 .fetch();
+        // 결과 count
+        Long count = queryFactory.select(patient.patientId.count())
+                .from(patient)
+                .where(whereBuilder)
+                .fetchOne();
+
+        return new PageImpl<>(
+                resultList
+                , pageable
+                , ObjectUtils.isNotEmpty(count)
+                    ? count
+                    : NumberUtils.LONG_ZERO);
     }
 
     @Override

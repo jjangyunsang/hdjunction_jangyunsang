@@ -5,4 +5,5 @@ package com.hdjunction.project.yunsang.global.util;
  */
 public class ConstantUtil {
     public static String PERCENT = "%";
+    public static String DASH = "-";
 }

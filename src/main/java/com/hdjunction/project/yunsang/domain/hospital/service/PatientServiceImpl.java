@@ -14,11 +14,11 @@ import com.hdjunction.project.yunsang.global.exception.ApiException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,17 +35,12 @@ public class PatientServiceImpl implements PatientService {
     @SuppressWarnings(value = "unchecked")
     @Transactional(readOnly = true)
     public <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto) {
-        List<PatientSearchResponseDto> searchList = patientRepository.getPatientSearch(patientSearchRequestDto);
-        Map<String, T> map = new HashMap<>();
-        PageDto pageDto = PageDto.of(
-                patientSearchRequestDto.getPage()
-                , patientSearchRequestDto.getLimit()
-                , searchList
+        Page<PatientSearchResponseDto> result = patientRepository.getPatientSearch(patientSearchRequestDto);
+
+        return Map.of(
+                "list", (T) result.getContent()
+                , "page", (T) PageDto.of(result)
         );
-        // TODO - Page Object로 구현변경 필요.
-        map.put("list", (T) pageDto.subList(searchList));
-        map.put("page", (T) pageDto);
-        return map;
     }
 
     @Override
