@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -26,6 +27,8 @@ public class Visit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "visit_id")
     private Long visitId;
+    @Column(name = "hospital_id")
+    private Long hospitalId;
     @Column(name = "patient_id")
     private Long patientId;
     @Column(name = "register_date")
@@ -33,9 +36,24 @@ public class Visit {
     @Column(name = "visit_status_code")
     private String visitStatusCode;
     @ManyToOne
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", insertable = false, updatable = false)
     private Hospital hospital;
     @ManyToOne
     @JoinColumn(name = "patient_id", insertable = false, updatable = false)
     private Patient patient;
+
+    @Builder
+    public Visit(
+            Long visitId
+            , Long hospitalId
+            , Long patientId
+            , LocalDateTime registerDate
+            , String visitStatusCode
+    ) {
+        this.visitId = visitId;
+        this.hospitalId = hospitalId;
+        this.patientId = patientId;
+        this.registerDate = registerDate;
+        this.visitStatusCode = visitStatusCode;
+    }
 }

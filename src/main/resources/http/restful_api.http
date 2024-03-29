@@ -33,3 +33,15 @@ Content-Type: application/json
 
 ### 환자정보 삭제 ###
 DELETE http://localhost/patient/1
+
+### 환자방문정보 등록 ###
+POST http://localhost/visit-patient
+Content-Type: application/json
+
+{
+  "hospitalId": 3,
+  "patientId": 1
+}
+
+### 환자방문정보 삭제 ###
+DELETE http://localhost/visit-patient/10
