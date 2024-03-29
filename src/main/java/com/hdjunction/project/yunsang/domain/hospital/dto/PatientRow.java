@@ -1,5 +1,7 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
+import com.hdjunction.project.yunsang.global.enums.Gender;
+import com.hdjunction.project.yunsang.global.util.StringUtil;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -55,8 +57,8 @@ public class PatientRow {
                 .medicalCareNo(medicalCareNo)
                 .patientName(patientName)
                 .patientNo(patientNo)
-                .gender(gender)
-                .birth(birth)
+                .gender(Gender.findName(gender))
+                .birth(StringUtil.birthFormat(birth))
                 .phone(phone)
                 .build();
     }

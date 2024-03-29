@@ -44,16 +44,16 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
         whereBuilder.and(patient.hospitalId.eq(patientSearchRequestDto.getHospitalId()));
 
         Map<String, String> conditionMap = patientSearchRequestDto.toConditionMap();
-        if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.PATIENT_NAME.getKey()))) {
+        if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.PATIENT_NAME.getCode()))) {
             whereBuilder.and(patient.patientName.like(
-                    StringUtil.whereLikeFormat(conditionMap.get(SearchConditionEnum.PATIENT_NAME.getKey())))
+                    StringUtil.whereLikeFormat(conditionMap.get(SearchConditionEnum.PATIENT_NAME.getCode())))
             );
 
-        } else if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.PATIENT_NO.getKey()))) {
-            whereBuilder.and(patient.patientNo.eq(conditionMap.get(SearchConditionEnum.PATIENT_NO.getKey())));
+        } else if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.PATIENT_NO.getCode()))) {
+            whereBuilder.and(patient.patientNo.eq(conditionMap.get(SearchConditionEnum.PATIENT_NO.getCode())));
 
-        } else if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.BIRTH.getKey()))) {
-            whereBuilder.and(patient.birth.eq(conditionMap.get(SearchConditionEnum.BIRTH.getKey())));
+        } else if (ObjectUtils.isNotEmpty(conditionMap.get(SearchConditionEnum.BIRTH.getCode()))) {
+            whereBuilder.and(patient.birth.eq(conditionMap.get(SearchConditionEnum.BIRTH.getCode())));
         }
         // 결과 List
         List<PatientSearchResponseDto> resultList = queryFactory.select(Projections.constructor(
@@ -63,7 +63,7 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
                 , patient.gender
                 , patient.birth
                 , patient.phone
-                , visit.registerDate.max().as("recentlyDate"))
+                , visit.registerDate.max().as("recentlyVisitDate"))
                 )
                 .from(patient).where(whereBuilder)
                 .leftJoin(visit).on(patient.patientId.eq(visit.patientId))

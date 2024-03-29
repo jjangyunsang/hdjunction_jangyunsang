@@ -1,6 +1,7 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
 import com.hdjunction.project.yunsang.domain.hospital.entity.Patient;
+import com.hdjunction.project.yunsang.global.util.ConstantUtil;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -42,11 +43,11 @@ public class PatientRequestDto {
     public boolean hasNotPatientId() {
         return ObjectUtils.isEmpty(patientId);
     }
-    // TODO - 생성 방법 고민 필요.
+
     /**
-     * 환자번호 생성
+     * 환자번호 생성(병원ID - 환자ID) ex) 122-311
      */
     private String createPatientNo() {
-        return hospitalId + "-" + birth;
+        return hospitalId + ConstantUtil.DASH + patientId;
     }
 }

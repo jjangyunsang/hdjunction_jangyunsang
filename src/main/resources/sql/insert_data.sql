@@ -29,13 +29,13 @@ VALUES
     (3, '장윤상우리병원', '12345678', '장윤상')
 ;
 
-INSERT INTO patient VALUES (1, 3, '장윤상', '등록번호1', 'M', '19900413', '01090101247');
-INSERT INTO patient VALUES (2, 3, '홍길동', '등록번호2', 'M', '20010112', '01012345678');
-INSERT INTO patient VALUES (3, 3, '성춘향', '등록번호3', 'W', '19940101', '01087654321');
-INSERT INTO patient VALUES (4, 3, '이몽룡', '등록번호3', 'M', '19980912', '01043218765');
-INSERT INTO patient VALUES (5, 3, '손오공', '등록번호3', 'M', '20001231', '01019900413');
-INSERT INTO patient VALUES (6, 3, '사오정', '등록번호3', 'M', '20121130', '01099998888');
-INSERT INTO patient VALUES (7, 3, '김초롱', '등록번호3', 'W', '19911108', '01077776666');
+INSERT INTO patient VALUES (1, 3, '장윤상', '3-1', 'M', '19900413', '01090101247');
+INSERT INTO patient VALUES (2, 3, '홍길동', '3-2', 'M', '20010112', '01012345678');
+INSERT INTO patient VALUES (3, 3, '성춘향', '3-3', 'W', '19940101', '01087654321');
+INSERT INTO patient VALUES (4, 3, '이몽룡', '3-4', 'M', '19980912', '01043218765');
+INSERT INTO patient VALUES (5, 3, '손오공', '3-5', 'M', '20001231', '01019900413');
+INSERT INTO patient VALUES (6, 3, '사오정', '3-6', 'M', '20121130', '01099998888');
+INSERT INTO patient VALUES (7, 3, '김초롱', '3-7', 'W', '19911108', '01077776666');
 ALTER TABLE patient ALTER COLUMN patient_id RESTART WITH 8;
 
 INSERT INTO visit VALUES (1, 3, 1, CURRENT_TIMESTAMP, '2');

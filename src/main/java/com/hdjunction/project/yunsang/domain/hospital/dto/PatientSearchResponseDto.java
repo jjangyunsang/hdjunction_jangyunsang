@@ -1,5 +1,6 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
+import com.hdjunction.project.yunsang.global.enums.Gender;
 import com.hdjunction.project.yunsang.global.util.StringUtil;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class PatientSearchResponseDto {
     private final String gender;
     private final String birth;
     private final String phone;
-    private final String recentlyDate;
+    private final String recentlyVisitDate;
 
     @Builder
     public PatientSearchResponseDto(
@@ -22,13 +23,13 @@ public class PatientSearchResponseDto {
             , String gender
             , String birth
             , String phone
-            , LocalDateTime recentlyDate
+            , LocalDateTime recentlyVisitDate
     ) {
         this.patientName = patientName;
         this.patientNo = patientNo;
-        this.gender = gender;
-        this.birth = birth;
+        this.gender = Gender.findName(gender);
+        this.birth = StringUtil.birthFormat(birth);
         this.phone = phone;
-        this.recentlyDate = StringUtil.setStringFromLocalDateTime(recentlyDate, "yyyy-MM-dd");
+        this.recentlyVisitDate = StringUtil.setStringFromLocalDateTime(recentlyVisitDate, "yyyy-MM-dd");
     }
 }
