@@ -11,9 +11,9 @@ import com.hdjunction.project.yunsang.global.util.StringUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +24,11 @@ import java.util.Map;
 
 @Repository
 public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
-    private final EntityManager entityManager;
-    private final JPAQueryFactory queryFactory; // TODO - Configuration DI 방식으로 변경예정.
+    private final JPAQueryFactory jpaQueryFactory;
 
-    public PatientRepositoryCustomImpl(
-            EntityManager entityManager) {
-        this.entityManager = entityManager;
-        this.queryFactory = new JPAQueryFactory(entityManager);
+    @Autowired
+    public PatientRepositoryCustomImpl(JPAQueryFactory jpaQueryFactory) {
+        this.jpaQueryFactory = jpaQueryFactory;
     }
 
     @Override
@@ -56,7 +54,7 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
             whereBuilder.and(patient.birth.eq(conditionMap.get(SearchConditionEnum.BIRTH.getCode())));
         }
         // 결과 List
-        List<PatientSearchResponseDto> resultList = queryFactory.select(Projections.constructor(
+        List<PatientSearchResponseDto> resultList = jpaQueryFactory.select(Projections.constructor(
                 PatientSearchResponseDto.class
                 , patient.patientName
                 , patient.patientNo
@@ -71,7 +69,7 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
                 .groupBy(patient.patientId)
                 .fetch();
         // 결과 count
-        Long count = queryFactory.select(patient.patientId.count())
+        Long count = jpaQueryFactory.select(patient.patientId.count())
                 .from(patient)
                 .where(whereBuilder)
                 .fetchOne();
@@ -90,7 +88,7 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
         QHospital hospital = QHospital.hospital;
         QVisit visit = QVisit.visit;
 
-        return queryFactory.select(
+        return jpaQueryFactory.select(
                 Projections.constructor(
                         PatientRow.class
                         , patient.patientId

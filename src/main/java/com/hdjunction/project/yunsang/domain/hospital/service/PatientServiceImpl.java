@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @SuppressWarnings(value = "unchecked")
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "transactionManager", readOnly = true)
     public <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto) {
         Page<PatientSearchResponseDto> result = patientRepository.getPatientSearch(patientSearchRequestDto);
 
@@ -44,7 +44,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "transactionManager", readOnly = true)
     public PatientResponseDto get(Long patientId) {
         List<PatientRow> patientRows = patientRepository.getPatientRows(patientId);
         if (ObjectUtils.isEmpty(patientRows)) throw new ApiException(ErrorCodes.NOT_FOUNT_PATIENT_ID);
@@ -60,13 +60,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void addPatient(PatientRequestDto patientRequestDto) {
         patientRepository.save(patientRequestDto.toEntity());
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void modifyPatient(PatientRequestDto patientRequestDto) {
         if (patientRequestDto.hasNotPatientId()) throw new ApiException(ErrorCodes.NOT_FOUNT_PATIENT_ID);
 
@@ -78,7 +78,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void deletePatient(Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ApiException(ErrorCodes.NOT_FOUND_PATIENT_ENTITY));

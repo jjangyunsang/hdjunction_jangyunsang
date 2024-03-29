@@ -5,8 +5,8 @@ import com.hdjunction.project.yunsang.domain.hospital.entity.Visit;
 import com.hdjunction.project.yunsang.domain.hospital.repository.VisitRepository;
 import com.hdjunction.project.yunsang.global.enums.ErrorCodes;
 import com.hdjunction.project.yunsang.global.exception.ApiException;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VisitServiceImpl implements VisitService {
@@ -17,13 +17,13 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void addVisit(VisitRequestDto visitRequestDto) {
         visitRepository.save(visitRequestDto.toEntity());
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void deleteVisit(Long visitId) {
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new ApiException(ErrorCodes.NOT_FOUNT_VISIT_ENTITY));
