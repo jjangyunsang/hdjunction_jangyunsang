@@ -52,15 +52,6 @@ public class ResponseDto<T> {
         }
         return data;
     }
-    /**
-     * 응답 데이터가 없는 정상 Case
-     */
-    public static ResponseDto<Object> success() {
-        return ResponseDto.builder()
-                .code(HttpStatus.OK.value())
-                .message(ResponseMessage.OK.getMessage())
-                .build();
-    }
 
     /**
      * 응답 실패 Case

@@ -8,6 +8,7 @@ import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseD
 import com.hdjunction.project.yunsang.domain.hospital.dto.VisitResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.entity.Patient;
 import com.hdjunction.project.yunsang.domain.hospital.repository.PatientRepository;
+import com.hdjunction.project.yunsang.global.dto.ListDto;
 import com.hdjunction.project.yunsang.global.dto.PageDto;
 import com.hdjunction.project.yunsang.global.enums.ErrorCodes;
 import com.hdjunction.project.yunsang.global.exception.ApiException;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -32,15 +32,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
     @Transactional(transactionManager = "transactionManager", readOnly = true)
-    public <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto) {
+    public ListDto<PatientSearchResponseDto> getList(PatientSearchRequestDto patientSearchRequestDto) {
         Page<PatientSearchResponseDto> result = patientRepository.getPatientSearch(patientSearchRequestDto);
 
-        return Map.of(
-                "list", (T) result.getContent()
-                , "page", (T) PageDto.of(result)
-        );
+        return new ListDto<>(result.getContent(), PageDto.of(result));
     }
 
     @Override

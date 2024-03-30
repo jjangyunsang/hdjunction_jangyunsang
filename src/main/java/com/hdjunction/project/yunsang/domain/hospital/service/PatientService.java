@@ -3,11 +3,11 @@ package com.hdjunction.project.yunsang.domain.hospital.service;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
-
-import java.util.Map;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
+import com.hdjunction.project.yunsang.global.dto.ListDto;
 
 public interface PatientService {
-    <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto);
+    ListDto<PatientSearchResponseDto> getList(PatientSearchRequestDto patientSearchRequestDto);
     PatientResponseDto get(Long patientId);
     void addPatient(PatientRequestDto patientRequestDto);
     void modifyPatient(PatientRequestDto patientRequestDto);
