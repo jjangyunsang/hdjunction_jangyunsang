@@ -3,8 +3,9 @@ package com.hdjunction.project.yunsang.domain.hospital.controller;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.service.PatientService;
-import com.hdjunction.project.yunsang.global.dto.ResponseDto;
+import com.hdjunction.project.yunsang.global.dto.ListDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,39 +34,36 @@ public class PatientController {
      * 환자 목록 조회
      */
     @GetMapping(value = "")
-    public ResponseDto<Object> getList(@Valid @ModelAttribute PatientSearchRequestDto patientSearchRequestDto) {
-        return ResponseDto.success(patientService.getList(patientSearchRequestDto));
+    public ListDto<PatientSearchResponseDto> getList(@Valid @ModelAttribute PatientSearchRequestDto patientSearchRequestDto) {
+        return patientService.getList(patientSearchRequestDto);
     }
 
     /**
      * 환자 조회
      */
     @GetMapping(value = "/{id}")
-    public ResponseDto<PatientResponseDto> get(@PathVariable(value = "id") Long patientId) {
-        return ResponseDto.success(patientService.get(patientId));
+    public PatientResponseDto get(@PathVariable(value = "id") Long patientId) {
+        return patientService.get(patientId);
     }
     /**
      * 환자 등록
      */
     @PostMapping(value = "")
-    public ResponseDto<Object> add(@Valid @RequestBody PatientRequestDto patientRequestDto) {
+    public void add(@Valid @RequestBody PatientRequestDto patientRequestDto) {
         patientService.addPatient(patientRequestDto);
-        return ResponseDto.success();
     }
     /**
      * 환자 수정
      */
     @PutMapping(value = "")
-    public ResponseDto<Object> modify(@Valid @RequestBody PatientRequestDto patientRequestDto) {
+    public void modify(@Valid @RequestBody PatientRequestDto patientRequestDto) {
         patientService.modifyPatient(patientRequestDto);
-        return ResponseDto.success();
     }
     /**
      * 환자 삭제
      */
     @DeleteMapping(value = "/{id}")
-    public ResponseDto<Object> delete(@PathVariable(value = "id") Long patientId) {
+    public void delete(@PathVariable(value = "id") Long patientId) {
         patientService.deletePatient(patientId);
-        return ResponseDto.success();
     }
 }

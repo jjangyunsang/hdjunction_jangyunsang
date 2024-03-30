@@ -32,4 +32,14 @@ public class StringUtil {
     public static String whereLikeFormat(String sql) {
         return ConstantUtil.PERCENT + sql + ConstantUtil.PERCENT;
     }
+
+    public static String birthFormat(String birth) {
+        if (ObjectUtils.isEmpty(birth) || birth.length() != 8) return birth;
+
+        return birth.substring(0, 4) +
+                ConstantUtil.DASH +
+                birth.substring(4, 6) +
+                ConstantUtil.DASH +
+                birth.substring(6);
+    }
 }

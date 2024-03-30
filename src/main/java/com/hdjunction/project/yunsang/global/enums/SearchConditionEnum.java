@@ -16,27 +16,19 @@ public enum SearchConditionEnum {
     , BIRTH("birth", "생년월일")
     ;
 
-    private final String key;
+    private final String code;
     private final String name;
 
-    SearchConditionEnum(String key, String name) {
-        this.key = key;
+    SearchConditionEnum(String code, String name) {
+        this.code = code;
         this.name = name;
     }
 
     public static Map<String, String> toDefaultMapByKey() {
         Map<String, String> map = new HashMap<>();
         for (SearchConditionEnum searchEnum : SearchConditionEnum.values()) {
-            map.put(searchEnum.getKey(), null);
+            map.put(searchEnum.getCode(), null);
         }
         return map;
-    }
-    /**
-     * 모든 검색 key
-     */
-    public static List<String> getNameAll() {
-        return Arrays.stream(SearchConditionEnum.values())
-                .map(SearchConditionEnum::getName)
-                .toList();
     }
 }

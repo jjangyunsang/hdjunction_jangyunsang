@@ -8,6 +8,7 @@ import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseD
 import com.hdjunction.project.yunsang.domain.hospital.dto.VisitResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.entity.Patient;
 import com.hdjunction.project.yunsang.domain.hospital.repository.PatientRepository;
+import com.hdjunction.project.yunsang.global.dto.ListDto;
 import com.hdjunction.project.yunsang.global.dto.PageDto;
 import com.hdjunction.project.yunsang.global.enums.ErrorCodes;
 import com.hdjunction.project.yunsang.global.exception.ApiException;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PatientServiceImpl implements PatientService {
@@ -32,19 +32,15 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @SuppressWarnings(value = "unchecked")
-    @Transactional(readOnly = true)
-    public <T> Map<String, T> getList(PatientSearchRequestDto patientSearchRequestDto) {
+    @Transactional(transactionManager = "transactionManager", readOnly = true)
+    public ListDto<PatientSearchResponseDto> getList(PatientSearchRequestDto patientSearchRequestDto) {
         Page<PatientSearchResponseDto> result = patientRepository.getPatientSearch(patientSearchRequestDto);
 
-        return Map.of(
-                "list", (T) result.getContent()
-                , "page", (T) PageDto.of(result)
-        );
+        return new ListDto<>(result.getContent(), PageDto.of(result));
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(transactionManager = "transactionManager", readOnly = true)
     public PatientResponseDto get(Long patientId) {
         List<PatientRow> patientRows = patientRepository.getPatientRows(patientId);
         if (ObjectUtils.isEmpty(patientRows)) throw new ApiException(ErrorCodes.NOT_FOUNT_PATIENT_ID);
@@ -60,13 +56,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void addPatient(PatientRequestDto patientRequestDto) {
         patientRepository.save(patientRequestDto.toEntity());
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void modifyPatient(PatientRequestDto patientRequestDto) {
         if (patientRequestDto.hasNotPatientId()) throw new ApiException(ErrorCodes.NOT_FOUNT_PATIENT_ID);
 
@@ -78,7 +74,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    @Transactional
+    @Transactional(transactionManager = "transactionManager")
     public void deletePatient(Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new ApiException(ErrorCodes.NOT_FOUND_PATIENT_ENTITY));
