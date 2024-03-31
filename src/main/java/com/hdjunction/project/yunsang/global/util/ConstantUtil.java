@@ -1,0 +1,13 @@
+package com.hdjunction.project.yunsang.global.util;
+
+/**
+ * 매직리터럴 -> 상수 관리 Class
+ */
+public class ConstantUtil {
+    public static String PERCENT = "%";
+    public static String DASH = "-";
+
+    private ConstantUtil() {
+        throw new IllegalStateException("Utility class.");
+    }
+}
