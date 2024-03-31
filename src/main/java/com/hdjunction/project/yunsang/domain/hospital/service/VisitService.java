@@ -22,6 +22,13 @@ public class VisitService {
     }
 
     @Transactional(transactionManager = "transactionManager")
+    public void modify(VisitRequestDto visitRequestDto) {
+        Visit visit = visitRepository.findById(visitRequestDto.getVisitId())
+                .orElseThrow(() -> new ApiException(ErrorCodes.NOT_FOUNT_VISIT_ENTITY));
+        visit.updateEntity(visitRequestDto); // Dirty Checking Update
+    }
+
+    @Transactional(transactionManager = "transactionManager")
     public void delete(Long visitId) {
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new ApiException(ErrorCodes.NOT_FOUNT_VISIT_ENTITY));

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class VisitRequestDto {
+    private Long visitId;
     @NotNull(message = "병원ID(hospitalId)는 필수입니다.")
     @Positive(message = "병원ID(hospitalId)는 양수 입력만 가능합니다.")
     private Long hospitalId;

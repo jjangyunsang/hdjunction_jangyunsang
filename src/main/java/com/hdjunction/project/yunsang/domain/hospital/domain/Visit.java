@@ -1,5 +1,6 @@
 package com.hdjunction.project.yunsang.domain.hospital.domain;
 
+import com.hdjunction.project.yunsang.domain.hospital.dto.VisitRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -57,4 +58,9 @@ public class Visit {
         this.registerDate = registerDate;
         this.visitStatusCode = visitStatusCode;
     }
+
+    public void updateEntity(VisitRequestDto visitRequestDto) {
+        this.visitStatusCode = visitRequestDto.getVisitStatusCode();
+    }
+
 }

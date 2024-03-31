@@ -68,8 +68,8 @@ public class DataSourceConfig {
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
 
-        props.put("hibernate_show_sql", true);
-        props.put("hibernate_format_sql", true);
+        props.put("hibernate.show_sql", true);
+        props.put("hibernate.format_sql", true);
         props.put("hibernate.query.in_clause_parameter_padding", true);
 
         return props;

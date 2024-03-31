@@ -58,7 +58,8 @@ public class PatientService {
 
     @Transactional(transactionManager = "transactionManager")
     public void add(PatientRequestDto patientRequestDto) {
-        patientRepository.save(patientRequestDto.toEntity());
+        Patient patient = patientRepository.save(patientRequestDto.toEntity());
+        patient.createPatientNo();
     }
 
     @Transactional(transactionManager = "transactionManager")

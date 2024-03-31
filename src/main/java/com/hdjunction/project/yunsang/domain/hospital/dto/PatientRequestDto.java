@@ -33,7 +33,7 @@ public class PatientRequestDto {
                 .patientId(patientId)
                 .hospitalId(hospitalId)
                 .patientName(patientName)
-                .patientNo(createPatientNo())
+                .patientNo(hospitalId + ConstantUtil.DASH)
                 .gender(gender)
                 .birth(birth)
                 .phone(phone)
@@ -42,12 +42,5 @@ public class PatientRequestDto {
 
     public boolean hasNotPatientId() {
         return ObjectUtils.isEmpty(patientId);
-    }
-
-    /**
-     * 환자번호 생성(병원ID - 환자ID) ex) 122-311
-     */
-    private String createPatientNo() {
-        return hospitalId + ConstantUtil.DASH + patientId;
     }
 }
