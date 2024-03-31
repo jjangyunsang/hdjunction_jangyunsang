@@ -5,7 +5,6 @@ import com.hdjunction.project.yunsang.domain.hospital.dto.PatientResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
 import com.hdjunction.project.yunsang.domain.hospital.service.PatientService;
-import com.hdjunction.project.yunsang.global.dto.ListDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -34,7 +33,7 @@ public class PatientController {
      * 환자 목록 조회
      */
     @GetMapping(value = "")
-    public ListDto<PatientSearchResponseDto> getList(@Valid @ModelAttribute PatientSearchRequestDto patientSearchRequestDto) {
+    public PatientSearchResponseDto getList(@Valid @ModelAttribute PatientSearchRequestDto patientSearchRequestDto) {
         return patientService.getList(patientSearchRequestDto);
     }
 
@@ -50,20 +49,20 @@ public class PatientController {
      */
     @PostMapping(value = "")
     public void add(@Valid @RequestBody PatientRequestDto patientRequestDto) {
-        patientService.addPatient(patientRequestDto);
+        patientService.add(patientRequestDto);
     }
     /**
      * 환자 수정
      */
     @PutMapping(value = "")
     public void modify(@Valid @RequestBody PatientRequestDto patientRequestDto) {
-        patientService.modifyPatient(patientRequestDto);
+        patientService.modify(patientRequestDto);
     }
     /**
      * 환자 삭제
      */
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable(value = "id") Long patientId) {
-        patientService.deletePatient(patientId);
+        patientService.delete(patientId);
     }
 }

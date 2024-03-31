@@ -20,11 +20,9 @@ public enum Gender {
         this.name = name;
     }
 
-    public static String findName(String code) {
+    public static Gender of(String code) {
         return Arrays.stream(Gender.values())
                 .filter(gender -> gender.getCode().equals(code))
-                .findFirst()
-                .orElseThrow(() -> new ApiException("성별 인자값이 올바르지 않습니다."))
-                .getName();
+                .findFirst().orElseThrow(() -> new ApiException("성별 인자값이 올바르지 않습니다."));
     }
 }

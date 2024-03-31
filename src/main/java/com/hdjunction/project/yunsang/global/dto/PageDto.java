@@ -1,6 +1,6 @@
 package com.hdjunction.project.yunsang.global.dto;
 
-import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRow;
 import com.hdjunction.project.yunsang.global.util.ConstantUtil;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class PageDto {
         this.total = total;
     }
 
-    public static PageDto of(Page<PatientSearchResponseDto> result) {
+    public static PageDto of(Page<PatientSearchRow> result) {
         Pageable pageable = result.getPageable();
         return PageDto.builder()
                 .page(pageable.getPageNumber() + NumberUtils.INTEGER_ONE)

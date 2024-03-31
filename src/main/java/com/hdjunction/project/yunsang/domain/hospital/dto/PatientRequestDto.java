@@ -1,6 +1,6 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
-import com.hdjunction.project.yunsang.domain.hospital.entity.Patient;
+import com.hdjunction.project.yunsang.domain.hospital.domain.Patient;
 import com.hdjunction.project.yunsang.global.util.ConstantUtil;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;

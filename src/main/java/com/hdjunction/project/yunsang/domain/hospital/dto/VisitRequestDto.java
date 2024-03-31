@@ -1,6 +1,6 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
-import com.hdjunction.project.yunsang.domain.hospital.entity.Visit;
+import com.hdjunction.project.yunsang.domain.hospital.domain.Visit;
 import com.hdjunction.project.yunsang.global.enums.VisitStatusCode;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

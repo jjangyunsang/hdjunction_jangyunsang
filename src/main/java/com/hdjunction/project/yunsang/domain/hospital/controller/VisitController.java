@@ -3,6 +3,7 @@ package com.hdjunction.project.yunsang.domain.hospital.controller;
 import com.hdjunction.project.yunsang.domain.hospital.dto.VisitRequestDto;
 import com.hdjunction.project.yunsang.domain.hospital.service.VisitService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VisitController {
     private final VisitService visitService;
 
+    @Autowired
     public VisitController(VisitService visitService) {
         this.visitService = visitService;
     }
@@ -24,7 +26,7 @@ public class VisitController {
      */
     @PostMapping(value = "")
     public void add(@Valid @RequestBody VisitRequestDto visitRequestDto) {
-        visitService.addVisit(visitRequestDto);
+        visitService.add(visitRequestDto);
     }
 
     /**
@@ -32,6 +34,6 @@ public class VisitController {
      */
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable(value = "id") Long visitId) {
-        visitService.deleteVisit(visitId);
+        visitService.delete(visitId);
     }
 }

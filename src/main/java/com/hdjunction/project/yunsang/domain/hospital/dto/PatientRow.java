@@ -57,7 +57,7 @@ public class PatientRow {
                 .medicalCareNo(medicalCareNo)
                 .patientName(patientName)
                 .patientNo(patientNo)
-                .gender(Gender.findName(gender))
+                .gender(Gender.of(gender).getName())
                 .birth(StringUtil.birthFormat(birth))
                 .phone(phone)
                 .build();
