@@ -44,5 +44,14 @@ Content-Type: application/json
   "patientId": 1
 }
 
+### 환자방문정보 수정 ###
+PUT http://localhost/visit-patient
+Content-Type: application/json
+
+{
+  "visitId": 10,
+  "visitStatusCode": "2"
+}
+
 ### 환자방문정보 삭제 ###
 DELETE http://localhost/visit-patient/10

@@ -1,9 +1,11 @@
-package com.hdjunction.project.yunsang.domain.hospital.entity;
+package com.hdjunction.project.yunsang.domain.hospital.domain;
 
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRequestDto;
+import com.hdjunction.project.yunsang.global.util.ConstantUtil;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,7 +45,7 @@ public class Patient {
     private String birth;
     @Column(name = "phone")
     private String phone;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id", insertable = false, updatable = false)
     private Hospital hospital;
     @OneToMany(mappedBy = "patient"
@@ -75,5 +77,12 @@ public class Patient {
         this.gender = patientRequestDto.getGender();
         this.birth = patientRequestDto.getBirth();
         this.phone = patientRequestDto.getPhone();
+    }
+
+    /**
+     * 환자번호 생성(병원ID - 환자ID) ex) 122-311
+     */
+    public void createPatientNo() {
+        this.patientNo = hospitalId + ConstantUtil.DASH + patientId;
     }
 }

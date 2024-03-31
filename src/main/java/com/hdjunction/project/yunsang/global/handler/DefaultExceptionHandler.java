@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class DefaultExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> exception(Exception ex) {
-        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .body(ResponseDto.fail(ex.getMessage()));
@@ -19,7 +18,6 @@ public class DefaultExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        ex.printStackTrace();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST.value())
                 .body(ResponseDto.badRequest(ex.getAllErrors().get(0).getDefaultMessage()));

@@ -1,35 +1,24 @@
 package com.hdjunction.project.yunsang.domain.hospital.dto;
 
-import com.hdjunction.project.yunsang.global.enums.Gender;
-import com.hdjunction.project.yunsang.global.util.StringUtil;
+import com.hdjunction.project.yunsang.global.dto.PageDto;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@NoArgsConstructor
 public class PatientSearchResponseDto {
-    private final String patientName;
-    private final String patientNo;
-    private final String gender;
-    private final String birth;
-    private final String phone;
-    private final String recentlyVisitDate;
+    private List<PatientSearchRow> list;
+    private PageDto page;
 
     @Builder
     public PatientSearchResponseDto(
-            String patientName
-            , String patientNo
-            , String gender
-            , String birth
-            , String phone
-            , LocalDateTime recentlyVisitDate
+            List<PatientSearchRow> list
+            , PageDto page
     ) {
-        this.patientName = patientName;
-        this.patientNo = patientNo;
-        this.gender = Gender.findName(gender);
-        this.birth = StringUtil.birthFormat(birth);
-        this.phone = phone;
-        this.recentlyVisitDate = StringUtil.setStringFromLocalDateTime(recentlyVisitDate, "yyyy-MM-dd");
+        this.list = list;
+        this.page = page;
     }
 }

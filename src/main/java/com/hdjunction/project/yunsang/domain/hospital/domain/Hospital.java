@@ -1,4 +1,4 @@
-package com.hdjunction.project.yunsang.domain.hospital.entity;
+package com.hdjunction.project.yunsang.domain.hospital.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

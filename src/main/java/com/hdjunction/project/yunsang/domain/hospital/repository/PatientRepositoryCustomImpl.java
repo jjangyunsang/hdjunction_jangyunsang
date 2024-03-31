@@ -1,11 +1,11 @@
 package com.hdjunction.project.yunsang.domain.hospital.repository;
 
+import com.hdjunction.project.yunsang.domain.hospital.domain.QHospital;
+import com.hdjunction.project.yunsang.domain.hospital.domain.QPatient;
+import com.hdjunction.project.yunsang.domain.hospital.domain.QVisit;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientRow;
 import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRequestDto;
-import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchResponseDto;
-import com.hdjunction.project.yunsang.domain.hospital.entity.QHospital;
-import com.hdjunction.project.yunsang.domain.hospital.entity.QPatient;
-import com.hdjunction.project.yunsang.domain.hospital.entity.QVisit;
+import com.hdjunction.project.yunsang.domain.hospital.dto.PatientSearchRow;
 import com.hdjunction.project.yunsang.global.enums.SearchConditionEnum;
 import com.hdjunction.project.yunsang.global.util.StringUtil;
 import com.querydsl.core.BooleanBuilder;
@@ -32,7 +32,7 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
     }
 
     @Override
-    public Page<PatientSearchResponseDto> getPatientSearch(PatientSearchRequestDto patientSearchRequestDto) {
+    public Page<PatientSearchRow> getPatientSearch(PatientSearchRequestDto patientSearchRequestDto) {
         QPatient patient = QPatient.patient;
         QVisit visit = QVisit.visit;
 
@@ -54,8 +54,8 @@ public class PatientRepositoryCustomImpl implements PatientRepositoryCustom {
             whereBuilder.and(patient.birth.eq(conditionMap.get(SearchConditionEnum.BIRTH.getCode())));
         }
         // 결과 List
-        List<PatientSearchResponseDto> resultList = jpaQueryFactory.select(Projections.constructor(
-                PatientSearchResponseDto.class
+        List<PatientSearchRow> resultList = jpaQueryFactory.select(Projections.constructor(
+                PatientSearchRow.class
                 , patient.patientName
                 , patient.patientNo
                 , patient.gender
