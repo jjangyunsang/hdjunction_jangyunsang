@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### 환자정보 삭제 ###
-DELETE http://localhost/patient/1
+DELETE http://localhost/patient/2
 
 ### 환자방문정보 등록 ###
 POST http://localhost/visit-patient

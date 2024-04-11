@@ -30,11 +30,12 @@
   - src/main/resources/http/restful_api.http 파일로 확인가능
 
   | API명      | Method | URL                        |
-  |-----------|--------|----------------------------|
-  | 환자목록 조회   | GET    | /patient                   |
-  | 환자정보 조회   | GET    | /patient/{patientId}       |
-  | 환자정보 등록   | POST   | /patient                   |
-  | 환자정보 수정   | PUT    | /patient                   |
+  |-----------|-------|----------------------------|
+  | 환자목록 조회   | GET   | /patient                   |
+  | 환자정보 조회   | GET   | /patient/{patientId}       |
+  | 환자정보 등록   | POST  | /patient                   |
+  | 환자정보 수정   | PUT   | /patient                   |
   | 환자정보 삭제   | DELETE | /patient/{patientId}       |
-  | 환자방문정보 등록 | POST   | /visit-patient             |
+  | 환자방문정보 등록 | POST  | /visit-patient             |
+  | 환자방문정보 수정 | PUT   | /visit-patient             |
   | 환자방문정보 삭제 | DELETE | /visit-patient/{patientId} |
