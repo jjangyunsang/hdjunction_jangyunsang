@@ -42,4 +42,8 @@ public class StringUtil {
                 ConstantUtil.DASH +
                 birth.substring(6);
     }
+
+    private StringUtil() {
+        throw new IllegalStateException("Utility class.");
+    }
 }

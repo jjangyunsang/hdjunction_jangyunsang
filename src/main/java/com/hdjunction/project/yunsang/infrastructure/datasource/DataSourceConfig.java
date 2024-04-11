@@ -1,15 +1,21 @@
 package com.hdjunction.project.yunsang.infrastructure.datasource;
 
+import com.hdjunction.project.yunsang.global.util.ConstantUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -36,8 +42,14 @@ import java.util.Map;
 )
 @EnableJpaAuditing // 생성일, 수정일을 자동으로 사용할 수 있음
 public class DataSourceConfig {
-    @Bean
-    public DataSource createDatasource(DataSourceProperty dataSourceProperty) {
+    private final DataSourceProperty dataSourceProperty;
+
+    @Autowired
+    public DataSourceConfig(DataSourceProperty dataSourceProperty) {
+        this.dataSourceProperty = dataSourceProperty;
+    }
+
+    private DataSource createDatasource(DataSourceProperty.Base dataSourceProperty) {
         HikariDataSource hikariDataSource = (HikariDataSource) DataSourceBuilder.create()
                 .driverClassName(dataSourceProperty.getDriverClassName())
                 .url(dataSourceProperty.getUrl())
@@ -47,6 +59,47 @@ public class DataSourceConfig {
 
         hikariDataSource.setTransactionIsolation("TRANSACTION_READ_COMMITTED");
         return hikariDataSource;
+    }
+    @Bean("masterDataSource")
+    public DataSource masterDataSource() {
+        return createDatasource(dataSourceProperty.getMaster());
+    }
+
+    @Bean("slaveDataSource")
+    public DataSource slaveDataSource() {
+        return createDatasource(dataSourceProperty.getSlave());
+    }
+
+    @DependsOn("masterDataSource")
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(@Qualifier("masterDataSource") DataSource masterDataSource) {
+        DataSourceInitializer initializer = new DataSourceInitializer();
+
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(new ClassPathResource(ConstantUtil.SCHEMA_LOCATIONS));
+        populator.addScript(new ClassPathResource(ConstantUtil.DATA_LOCATIONS));
+
+        initializer.setDataSource(masterDataSource);
+        initializer.setDatabasePopulator(populator);
+        return initializer;
+    }
+
+    @DependsOn("masterDataSource")
+    @Bean
+    public DataSource routingDataSource(@Qualifier("masterDataSource") DataSource masterDataSource) {
+        DataSource slaveDataSource = createDatasource(dataSourceProperty.getSlave());
+
+        HikariDataSource hikariSlaveDataSource = (HikariDataSource) slaveDataSource;
+        hikariSlaveDataSource.setReadOnly(true);
+
+        ReplicationRoutingDataSource routingDataSource = new ReplicationRoutingDataSource();
+        Map<Object, Object> dataSourceMap = new HashMap<>();
+        dataSourceMap.put(ConstantUtil.MASTER, masterDataSource);
+        dataSourceMap.put(ConstantUtil.SLAVE, slaveDataSource);
+        routingDataSource.setTargetDataSources(dataSourceMap);
+        routingDataSource.setDefaultTargetDataSource(slaveDataSource);
+
+        return routingDataSource;
     }
 
     @Bean
@@ -80,7 +133,7 @@ public class DataSourceConfig {
      */
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            @Qualifier("createDatasource") DataSource dataSource
+            @Qualifier("routingDataSource") DataSource dataSource
             , @Qualifier("entityManagerFactoryBuilder") EntityManagerFactoryBuilder builder) {
         return builder.dataSource(dataSource)
                 .packages("com.hdjunction.project.yunsang.domain")
